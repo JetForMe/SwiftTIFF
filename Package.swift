@@ -15,13 +15,14 @@ let package = Package(
     targets:
     [
 		.systemLibrary(name: "libtiff", pkgConfig: "libtiff-4", providers: [.brew(["libtiff"]), .apt(["libtiff-dev"])]),
+		.systemLibrary(name: "libgeotiff", pkgConfig: "libgeotiff", providers: [.brew(["libgeotiff"]), .apt(["libgeotiff-dev"])]),
         .target(
             name: "SwiftTIFF",
             dependencies: ["libtiff"]
 		),
         .testTarget(
             name: "SwiftTIFFTests",
-            dependencies: ["SwiftTIFF"]
+            dependencies: ["SwiftTIFF", "libgeotiff"]
         ),
     ]
 )

@@ -1,0 +1,5 @@
+module libgeotiff
+{
+	umbrella header "libgeotiff.h"
+	link "geotiff"
+}	
