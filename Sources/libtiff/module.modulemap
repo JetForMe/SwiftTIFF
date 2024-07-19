@@ -1,0 +1,5 @@
+module libmodbus
+{
+	umbrella header "libtiff.h"
+	link "tiff"
+}	
