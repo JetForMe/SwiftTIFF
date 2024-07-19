@@ -1,1 +1,1 @@
-#include <tiff1.h>
+#include <tiff.h>
