@@ -11,18 +11,34 @@ let package = Package(
         .library(
             name: "SwiftTIFF",
             targets: ["SwiftTIFF"]),
+        .library(
+            name: "SwiftGeoTIFF",
+            targets: ["SwiftGeoTIFF"]),
+    ],
+    dependencies:
+    [
+		.package(url: "https://github.com/apple/swift-testing.git",					branch: "main"),
     ],
     targets:
     [
 		.systemLibrary(name: "libtiff", pkgConfig: "libtiff-4", providers: [.brew(["libtiff"]), .apt(["libtiff-dev"])]),
 		.systemLibrary(name: "libgeotiff", pkgConfig: "libgeotiff", providers: [.brew(["libgeotiff"]), .apt(["libgeotiff-dev"])]),
         .target(
+            name: "libtiffShim",
+            dependencies: ["libtiff", "libgeotiff"]		//	TODO: Break out GeoTIFF shims into separate module
+		),
+        .target(
             name: "SwiftTIFF",
-            dependencies: ["libtiff"]
+            dependencies: ["libtiff", "libtiffShim"]
+		),
+        .target(
+            name: "SwiftGeoTIFF",
+            dependencies: ["SwiftTIFF", "libgeotiff", "libtiff", "libtiffShim"]
 		),
         .testTarget(
             name: "SwiftTIFFTests",
-            dependencies: ["SwiftTIFF", "libgeotiff"]
+            dependencies: ["SwiftTIFF", "SwiftGeoTIFF", "libtiffShim", "libgeotiff", .product(name: "Testing", package: "swift-testing")],
+			resources: [ .copy("Resources") ]
         ),
     ]
 )
